@@ -24,7 +24,7 @@ exports.create = function() {
 	Ti.UI.setBackgroundImage('Default.png');
 	var self = Ti.UI.createWindow({
 		exitOnClose : true,
-		backgroundColor : '#7F9AB8',
+		backgroundColor : 'white',
 		navBarHidden : true,
 		title : 'Birdnames :: Orders and Families'
 	});

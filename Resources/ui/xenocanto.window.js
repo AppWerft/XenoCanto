@@ -18,7 +18,7 @@ exports.create = function(_bird) {
 		height : '125dip',
 		zIndex : 99,
 		opacity : 0.8,
-		style : (Ti.Platform.osname=='android')? Ti.UI.ActivityIndicatorStyle.BIG :Ti.UI.iPhone.ActivityIndicatorStyle.BIG,
+		style : (Ti.Platform.osname == 'android') ? Ti.UI.ActivityIndicatorStyle.BIG : Ti.UI.iPhone.ActivityIndicatorStyle.BIG,
 		font : {
 			fontSize : '12dip'
 		}/*,
@@ -44,10 +44,21 @@ exports.create = function(_bird) {
 		bird : _bird.latinname,
 		onload : function(_res) {
 			self.actind.setMessage('  Got ' + _res.recordingslength + ' songs from song database.');
-			for (var i = 0; i < _res.recordings.length && i < 10; i++) {
+			for (var i = 0; i < _res.recordings.length; i++) {
 				var row = require('ui/xenocantoplayer').create(self, _res.recordings[i]);
 				rows.push(row);
 			}
+			var maprow = Ti.UI.createTableViewRow();
+			var b = Ti.UI.createButton({
+				height : 50,
+				width : 300
+			});
+			maprow.add(b);
+			b.addEventListener('click', function() {
+				var gmap = require('ui/map').create();
+				gmap.open();
+			});
+			rows.push(maprow);
 			self.actind.hide();
 			self.remove(self.actind);
 			self.tv.setData(rows);
