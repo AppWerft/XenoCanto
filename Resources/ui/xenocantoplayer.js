@@ -1,23 +1,27 @@
 exports.create = function(_win, _song) {
-	
-	Ti.App.XenoCanto.getRecordingDetails({
-		id : _song.id,
-		onload : function(_data) {
-			console.log(_data);
-		}
-	});
-
-	const H = Ti.Platform.displayCaps.platformWidth * 0.36;
+	var song = _song;
+	const H = Ti.Platform.displayCaps.platformWidth * 0.2;
 	var self = Ti.UI.createTableViewRow({
-		height : H
+		height : Ti.UI.SIZE,
+		layout : 'vertical'
 	});
-	self.sonogramm = Ti.UI.createImageView({
-		image : _song.sono,
+	self.add(Ti.UI.createLabel({
+		text : song.loc,
+		height : '40dip',
+		color : 'gray',
+		left : '10dip',
+		right : '10dip',
+		font : {
+			fontWeight : 'bold',
+			fontSize : '16dip'
+		}
+	}));
+	self.sonogramm = Ti.UI.createView({
 		width : Ti.Platform.displayCaps.platformWidth,
 		height : H,
 		top : 0,
 		bottom : 0,
-		defaultImage : '/assets/bird.png',
+		backgroundImage : '/assets/bird.png',
 		bubbleParent : true
 	});
 	self.progress = Ti.UI.createView({
@@ -28,12 +32,21 @@ exports.create = function(_win, _song) {
 		opacity : 0.01,
 		backgroundColor : 'black',
 	});
+	self.sonogramm.add(self.progress);
 	self.add(self.sonogramm);
-	Ti.App.XenoCanto.getDetails({
+	self.add(Ti.UI.createLabel({
+		text : _song.rec,
+		left : '10dip',
+		font : {
+			fontWeight : 'bold'
+		}
+	}));
+	Ti.App.XenoCanto.getRecordingDetails({
 		id : _song.id,
-		ndx : 0,
 		onload : function(_data) {
-			_song.duration = _data.duration;
+			self.sonogramm.backgroundImage = _data.sonogramm;
+			song.duration = _data.duration;
+			song.mp3 = _data.mp3;
 			self.playstart = Ti.UI.createImageView({
 				image : '/assets/play.png',
 				width : 60,
@@ -41,9 +54,9 @@ exports.create = function(_win, _song) {
 				zIndex : 999
 			});
 			self.add(self.progress);
-			self.add(self.playstart);
+			self.sonogramm.add(self.playstart);
 			self.addEventListener('click', function() {
-				self.progress.left = 0;
+				self.progress.setLeft(0);
 				try {
 					if (_win.audioPlayer.playing || _win.audioPlayer.paused) {
 						_win.audioPlayer.stop();
@@ -54,16 +67,14 @@ exports.create = function(_win, _song) {
 						_win.actind.hide();
 						self.playstart.show();
 						self.progress.setOpacity(0);
-						self.progress.left = 0;
-						console.log('Player stopping');
+						self.progress.setLeft(0);
 					} else {
 						self.playstart.hide();
 						_win.add(_win.actind);
 						_win.actind.show();
 						_win.actind.setMessage('   Loading \n   song\n   from Leiden …');
-						_win.audioPlayer.setUrl(_song.mp3);
+						_win.audioPlayer.setUrl(song.mp3);
 						_win.audioPlayer.start();
-						console.log('Player starting');
 					}
 				} catch(E) {
 					console.log(E);
@@ -71,22 +82,19 @@ exports.create = function(_win, _song) {
 			});
 			_win.audioPlayer.addEventListener('change', function(_e) {
 				if (_song.mp3 == _e.source.url) {
-					console.log(_e.state);
 					if (_win) {
 						if (_win.audioPlayer.playing) {
 							_win.actind.hide();
 							_win.remove(_win.actind);
 							self.progress.setOpacity(0.2);
-
-							console.log('Duration: ' + _song.duration);
 							self.progress.animate({
 								left : Ti.Platform.displayCaps.platformWidth,
-								duration : 1000 * _song.duration
+								duration : 1000 * song.duration
 							});
 						} else {
 							self.playstart.show();
 							self.progress.setOpacity(0);
-							self.progress.left = 0;
+							self.progress.setLeft(0);
 						}
 					}
 				}

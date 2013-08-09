@@ -38,7 +38,7 @@ XenoCanto.prototype.searchRecordings = function(_args) {
 }
 
 XenoCanto.prototype.getRecordingDetails = function(_song) {
-	var url = 'http://www.xeno-canto.org/embed.php?XC=' + _song.id + '&simple=1';
+	var url = 'http://www.xeno-canto.org/embed.php?XC=' + _song.id;
 	var xhr = Ti.Network.createHTTPClient({
 		onload : function() {
 			var web = this.responseText;

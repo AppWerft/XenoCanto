@@ -18,7 +18,7 @@ exports.create = function(_bird) {
 		height : '125dip',
 		zIndex : 99,
 		opacity : 0.8,
-		style : Ti.UI.ActivityIndicatorStyle.BIG,
+		style : (Ti.Platform.osname=='android')? Ti.UI.ActivityIndicatorStyle.BIG :Ti.UI.iPhone.ActivityIndicatorStyle.BIG,
 		font : {
 			fontSize : '12dip'
 		}/*,
@@ -36,27 +36,16 @@ exports.create = function(_bird) {
 		}));
 	self.tv = Ti.UI.createTableView({
 		top : Ti.Platform.displayCaps.platformWidth * 0.7,
-		height : '400dip',
-		borderColor : 'green',
-		borderWidth : 1
 	});
 	self.add(self.tv);
 	self.add(self.actind);
 	self.actind.setMessage(' Get songs from XenoCanto.');
 	Ti.App.XenoCanto.searchRecordings({
 		bird : _bird.latinname,
-		q : 'A',
-		onload : function(_e) {
-			console.log(_e.recordings);
-		}
-	});
-
-	Ti.App.XenoCanto.getSongsByLatinname({
-		latin : _bird.latinname,
-		onload : function(_list) {
-			self.actind.setMessage('  Got ' + _list.length + ' songs\n  from song database.');
-			for (var i = 0; i < _list.length && i < 10; i++) {
-				var row = require('ui/xenocantoplayer').create(self, _list[i]);
+		onload : function(_res) {
+			self.actind.setMessage('  Got ' + _res.recordingslength + ' songs from song database.');
+			for (var i = 0; i < _res.recordings.length && i < 10; i++) {
+				var row = require('ui/xenocantoplayer').create(self, _res.recordings[i]);
 				rows.push(row);
 			}
 			self.actind.hide();
