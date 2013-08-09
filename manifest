@@ -1,0 +1,21 @@
+<<<<<<< HEAD
+#appname:XenoCanto
+#appid:de.appwerft.birdsdb
+#type:mobile
+#guid:641d726c-e554-43fb-8702-cb36f914d71d
+#version:1.0
+#publisher:fuerst
+#url:http://
+#image:appicon.png
+#desc:not specified
+=======
+#appname: XenoCanto
+#appid: de.appwerft.xenocanto
+#type: mobile
+#guid: 641d726c-e554-43fb-8702-cb36f914d71d
+#version: 1.0
+#publisher: not specified
+#url: not specified
+#image: appicon.png
+#desc: not specified
+>>>>>>> f6f1ec0cc1751906f2d42297dab4d6bb703623b6
