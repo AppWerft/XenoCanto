@@ -17,18 +17,18 @@ XenoCanto.prototype.searchRecordings = function(_args) {
 	var xhr = Ti.Network.createHTTPClient({
 		onload : function() {
 			var json = JSON.parse(this.responseText);
-			if (json.numRecordings > 0) {
-				for (var i = 0; i < json.recordings.length; i++) {
-					var id = json.recordings[i].id;
-					self.getRecordingDetails({
-						id : id,
-						ndx : i,
-						onload : function(_data) {
-							console.log(_data);
-						}
-					});
-				}
-			}
+			/*if (json.numRecordings > 0) {
+			 for (var i = 0; i < json.recordings.length; i++) {
+			 var id = json.recordings[i].id;
+			 self.getRecordingDetails({
+			 id : id,
+			 ndx : i,
+			 onload : function(_data) {
+			 console.log(_data);
+			 }
+			 });
+			 }
+			 }*/
 			if (_args.onload && typeof _args.onload == 'function')
 				_args.onload(json);
 		}
@@ -41,25 +41,23 @@ XenoCanto.prototype.getRecordingDetails = function(_song) {
 	var url = 'http://www.xeno-canto.org/embed.php?XC=' + _song.id + '&simple=1';
 	var xhr = Ti.Network.createHTTPClient({
 		onload : function() {
-			var song = {
-				i : _song.ndx
-			};
-			var regex = /<div class="jp\-xc\-duration">(.*?)<\/div>/g;
-			var dur = regex.exec(this.responseText);
-			if (dur) {
-				_song.duration = parseInt(dur[1].split(':')[0]) * 60 + parseInt(dur[1].split(':')[1]);
+			var web = this.responseText;
+			var res = null;
+			var song = {};
+			res = /<div class="jp\-xc\-duration">(.*?)<\/div>/g.exec(web);
+			if (res) {
+				song.duration = parseInt(res[1].split(':')[0]) * 60 + parseInt(res[1].split(':')[1]);
 			}
-			regex = /<div class="jp\-xc\-sono"><img src="(.*?)"><\/div>/g;
-			var sono = regex.exec(this.responseText);
-			if (sono) {
-				_song.sonogramm = sonogramm[1];
+			res = /<div class="jp\-xc\-sono"><img src="(.*?)"><\/div>/g.exec(web);
+			if (res) {
+				song.sonogramm = res[1];
 			}
-			regex = /data\-xc\-filepath="(.*?)"/g;
-			var mp3 = regex.exec(this.responseText);
-			if (mp3) {
-				_song.mp3 = sonogramm[1];
+			res = /data\-xc\-filepath="(.*?)"/g.exec(web);
+			if (res) {
+				song.mp3 = res[1];
 			}
-			_song.onload(_song);
+			console.log(song);
+			_song.onload(song);
 		}
 	});
 	xhr.open('GET', url);

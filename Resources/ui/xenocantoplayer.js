@@ -1,4 +1,12 @@
 exports.create = function(_win, _song) {
+	
+	Ti.App.XenoCanto.getRecordingDetails({
+		id : _song.id,
+		onload : function(_data) {
+			console.log(_data);
+		}
+	});
+
 	const H = Ti.Platform.displayCaps.platformWidth * 0.36;
 	var self = Ti.UI.createTableViewRow({
 		height : H
@@ -21,7 +29,7 @@ exports.create = function(_win, _song) {
 		backgroundColor : 'black',
 	});
 	self.add(self.sonogramm);
-	Ti.App.XenoCanto.getRecordingDetails({
+	Ti.App.XenoCanto.getDetails({
 		id : _song.id,
 		ndx : 0,
 		onload : function(_data) {
@@ -85,6 +93,5 @@ exports.create = function(_win, _song) {
 			});
 		}
 	});
-
 	return self;
 }
