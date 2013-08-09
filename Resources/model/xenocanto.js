@@ -17,18 +17,6 @@ XenoCanto.prototype.searchRecordings = function(_args) {
 	var xhr = Ti.Network.createHTTPClient({
 		onload : function() {
 			var json = JSON.parse(this.responseText);
-			/*if (json.numRecordings > 0) {
-			 for (var i = 0; i < json.recordings.length; i++) {
-			 var id = json.recordings[i].id;
-			 self.getRecordingDetails({
-			 id : id,
-			 ndx : i,
-			 onload : function(_data) {
-			 console.log(_data);
-			 }
-			 });
-			 }
-			 }*/
 			if (_args.onload && typeof _args.onload == 'function')
 				_args.onload(json);
 		}
@@ -38,7 +26,7 @@ XenoCanto.prototype.searchRecordings = function(_args) {
 }
 
 XenoCanto.prototype.getRecordingDetails = function(_song) {
-	var url = 'http://www.xeno-canto.org/embed.php?XC=' + _song.id;
+	var url = 'http://www.xeno-canto.org/' + _song.id;
 	var xhr = Ti.Network.createHTTPClient({
 		onload : function() {
 			var web = this.responseText;
@@ -48,9 +36,9 @@ XenoCanto.prototype.getRecordingDetails = function(_song) {
 			if (res) {
 				song.duration = parseInt(res[1].split(':')[0]) * 60 + parseInt(res[1].split(':')[1]);
 			}
-			res = /<div class="jp\-xc\-sono"><img src="(.*?)"><\/div>/g.exec(web);
+			res = /<div class="jp\-xc\-sono"><a(.*?)><img src="(.*?)"><\/a><\/div>/g.exec(web);
 			if (res) {
-				song.sonogramm = res[1];
+				song.sonogramm = res[2];
 			}
 			res = /data\-xc\-filepath="(.*?)"/g.exec(web);
 			if (res) {

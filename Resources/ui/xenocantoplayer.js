@@ -1,10 +1,26 @@
 exports.create = function(_win, _song) {
 	var song = _song;
-	const H = Ti.Platform.displayCaps.platformWidth * 0.2;
+	const H = Ti.Platform.displayCaps.platformWidth / 3;
 	var self = Ti.UI.createTableViewRow({
 		height : Ti.UI.SIZE,
 		layout : 'vertical'
 	});
+	self.sonogramm = Ti.UI.createView({
+		width : Ti.Platform.displayCaps.platformWidth,
+		height : H,
+		top : 0,
+		bottom : 0,
+		bubbleParent : true
+	});
+	self.progress = Ti.UI.createView({
+		height : H,
+		left : 0,
+		top : 0,
+		width : Ti.Platform.displayCaps.platformWidth,
+		opacity : 0.01,
+		backgroundColor : 'black',
+	});
+
 	self.add(Ti.UI.createLabel({
 		text : song.loc,
 		height : '40dip',
@@ -16,23 +32,6 @@ exports.create = function(_win, _song) {
 			fontSize : '16dip'
 		}
 	}));
-	self.sonogramm = Ti.UI.createView({
-		width : Ti.Platform.displayCaps.platformWidth,
-		height : H,
-		top : 0,
-		bottom : 0,
-		backgroundImage : '/assets/bird.png',
-		bubbleParent : true
-	});
-	self.progress = Ti.UI.createView({
-		height : H,
-		left : 0,
-		top : 0,
-		width : Ti.Platform.displayCaps.platformWidth,
-		opacity : 0.01,
-		backgroundColor : 'black',
-	});
-	self.sonogramm.add(self.progress);
 	self.add(self.sonogramm);
 	self.add(Ti.UI.createLabel({
 		text : _song.rec,
@@ -53,7 +52,7 @@ exports.create = function(_win, _song) {
 				height : 60,
 				zIndex : 999
 			});
-			self.add(self.progress);
+			self.sonogramm.add(self.progress);
 			self.sonogramm.add(self.playstart);
 			self.addEventListener('click', function() {
 				self.progress.setLeft(0);
@@ -89,7 +88,7 @@ exports.create = function(_win, _song) {
 							self.progress.setOpacity(0.2);
 							self.progress.animate({
 								left : Ti.Platform.displayCaps.platformWidth,
-								duration : 1000 * song.duration
+								duration : 950 * song.duration
 							});
 						} else {
 							self.playstart.show();
