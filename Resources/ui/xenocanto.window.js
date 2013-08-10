@@ -13,9 +13,9 @@ exports.create = function(_bird) {
 	self.actind = Ti.UI.createActivityIndicator({
 		color : 'white',
 		backgroundColor : '#262',
-		width : '200dip',
+		width : '220dip',
 		message : 'Bitte etwas Geduld … ',
-		height : '125dip',
+		height : '100dip',
 		zIndex : 99,
 		opacity : 0.8,
 		style : (Ti.Platform.osname == 'android') ? Ti.UI.ActivityIndicatorStyle.BIG : Ti.UI.iPhone.ActivityIndicatorStyle.BIG,
@@ -50,12 +50,16 @@ exports.create = function(_bird) {
 			}
 			var maprow = Ti.UI.createTableViewRow();
 			var b = Ti.UI.createButton({
-				height : 50,
-				width : 300
+				height : 60,
+				right : 10,
+				top : 10,
+				width : Ti.UI.SIZE,
+				opacity : 0.7,
+				title : ' Bird map '
 			});
-			maprow.add(b);
+			self.add(b);
 			b.addEventListener('click', function() {
-				var gmap = require('ui/map').create();
+				var gmap = require('ui/gmap.window').create();
 				gmap.open();
 			});
 			rows.push(maprow);
