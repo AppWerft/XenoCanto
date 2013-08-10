@@ -1,7 +1,5 @@
 exports.create = function() {
-	var self = Ti.UI.createWindow({
-		
-	});
+	var self = Ti.UI.createWindow();
 	var MapModule = require('ti.map');
 	switch (MapModule.isGooglePlayServicesAvailable()) {
 		case MapModule.SUCCESS:
@@ -9,10 +7,10 @@ exports.create = function() {
 	}
 	var gmap = MapModule.createView({
 		userLocation : true,
-		mapType : MapModule.NORMAL_TYPE,
+		mapType : MapModule.TERRAIN_TYPE,
 		region : {
-			latitude : -33.87365,
-			longitude : 151.20689,
+			latitude : 53.53,
+			longitude : 10,
 			latitudeDelta : 0.1,
 			longitudeDelta : 0.1
 		}
