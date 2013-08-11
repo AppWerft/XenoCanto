@@ -48,24 +48,24 @@ exports.create = function(_bird) {
 				var row = require('ui/xenocantoplayer').create(self, _res.recordings[i]);
 				rows.push(row);
 			}
-			var maprow = Ti.UI.createTableViewRow();
-			var b = Ti.UI.createButton({
-				height : 60,
-				right : 10,
-				top : 10,
-				width : Ti.UI.SIZE,
-				opacity : 0.7,
-				title : ' Bird map '
-			});
-			self.add(b);
-			b.addEventListener('click', function() {
-				var gmap = require('ui/gmap.window').create(_res);
-				gmap.open();
-			});
-			rows.push(maprow);
-			self.actind.hide();
-			self.remove(self.actind);
-			self.tv.setData(rows);
+			if (_res.recordings.length) {
+				var b = Ti.UI.createButton({
+					height : 60,
+					right : 10,
+					top : 10,
+					width : Ti.UI.SIZE,
+					opacity : 0.7,
+					title : ' Bird map '
+				});
+				self.add(b);
+				b.addEventListener('click', function() {
+					var gmap = require('ui/gmap.window').create(_res);
+					gmap.open();
+				});
+				self.actind.hide();
+				self.remove(self.actind);
+				self.tv.setData(rows);
+			}
 		}
 	});
 

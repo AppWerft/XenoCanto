@@ -20,7 +20,7 @@ exports.familyTemplate = {
 		properties : {
 			color : '#333',
 			font : {
-				fontFamily : 'Georgia-Italic',
+				fontFamily : 'UbuntuCondensed-Regular',
 				fontSize : '14dp',
 				fontStyle : 'italic'
 			},
@@ -33,8 +33,8 @@ exports.familyTemplate = {
 		properties : {
 			color : '#666',
 			font : {
-				fontFamily : 'Arial',
-				fontSize : '18dip',
+				fontFamily : 'UbuntuCondensed-Regular',
+				fontSize : '22dip',
 				fontWeight : 'bold'
 			},
 			left : '110dip',
@@ -54,7 +54,7 @@ exports.families = {
 
 			color : '#333',
 			font : {
-				fontFamily : 'Arial',
+				fontFamily : 'UbuntuCondensed-Regular',
 				fontSize : '16dp',
 				fontWeight : 'bold'
 			},

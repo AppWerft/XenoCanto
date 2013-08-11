@@ -3,6 +3,7 @@
 var XenoCanto = function() {
 	return this;
 }
+
 XenoCanto.prototype.searchRecordings = function(_args) {
 	var self = this;
 	var parameters = [];
@@ -22,7 +23,7 @@ XenoCanto.prototype.searchRecordings = function(_args) {
 		}
 	});
 	xhr.open('GET', url);
-	xhr.send(null)
+	xhr.send(null);
 }
 
 XenoCanto.prototype.getRecordingDetails = function(_song) {
@@ -51,7 +52,8 @@ XenoCanto.prototype.getRecordingDetails = function(_song) {
 			res = /<td>Date<\/td><td>(.*?)<\/td>/g.exec(web);
 			if (res) {
 				song.date = res[1];
-			}res = /<td>Time<\/td><td>(.*?)<\/td>/g.exec(web);
+			}
+			res = /<td>Time<\/td><td>(.*?)<\/td>/g.exec(web);
 			if (res) {
 				song.time = res[1];
 			}

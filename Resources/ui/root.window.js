@@ -28,7 +28,7 @@ exports.create = function() {
 		navBarHidden : true,
 		title : 'Birdnames :: Orders and Families'
 	});
-	self.open();
+	
 	var listView = Ti.UI.createListView({
 		templates : {
 			'template' : require('ui/templates').familyTemplate
@@ -66,5 +66,5 @@ exports.create = function() {
 		console.log('rootlistview blurred');
 		listView.locked = false
 	});
-
+	return self;
 }

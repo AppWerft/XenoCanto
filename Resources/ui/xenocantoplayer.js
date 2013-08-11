@@ -29,6 +29,7 @@ exports.create = function(_win, _song) {
 		right : '10dip',
 		font : {
 			fontWeight : 'bold',
+			fontFamily : 'UbuntuCondensed-Regular',
 			fontSize : '16dip'
 		}
 	}));
@@ -42,6 +43,9 @@ exports.create = function(_win, _song) {
 		top : 20,
 		text : song.rec,
 		height : 20,
+		font : {
+			fontWeight : 'bold'
+		},
 		color : 'black'
 	}));
 	self.add(meta);
