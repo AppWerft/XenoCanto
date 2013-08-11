@@ -4,7 +4,7 @@ exports.create = function(_bird) {
 		locked : false
 	});
 	var MapModule = require('ti.map');
-	var gmap = MapModule.createView({
+	self.gmap = MapModule.createView({
 		userLocation : true,
 		enableZoomControls : false,
 		mapType : MapModule.NORMAL_TYPE,
@@ -17,7 +17,7 @@ exports.create = function(_bird) {
 		},
 		animate : true
 	});
-	self.add(gmap);
+	self.add(self.gmap);
 	var lastregion = null;
 	var lat, lng;
 	var pins = [];
@@ -46,7 +46,7 @@ exports.create = function(_bird) {
 						longitude : _data.recordings[i].lng,
 					}));
 				}
-				gmap.addAnnotations(pins);
+				self.gmap.addAnnotations(pins);
 				setTimeout(function() {
 					console.log('unlocked');
 					self.locked = false;
@@ -80,8 +80,8 @@ exports.create = function(_bird) {
 			})
 		}, 800);
 	} else {
-		gmap.addEventListener('regionchanged', onregionchanged);
-		gmap.addEventListener('click', function() {
+		self.gmap.addEventListener('regionchanged', onregionchanged);
+		self.gmap.addEventListener('click', function() {
 			self.locked = true;
 			setTimeout(function() {
 				self.locked = false;
@@ -109,7 +109,7 @@ exports.create = function(_bird) {
 					latitudeDelta : START,
 					longitudeDelta : START
 				};
-				gmap.setLocation(region);
+				self.gmap.setLocation(region);
 				onregionchanged(region);
 			});
 		});
