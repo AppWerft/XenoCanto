@@ -1,20 +1,20 @@
 const START = 1;
 
 exports.create = function(_bird) {
-	
 	var self = Ti.UI.createWindow({
 		title : null,
 		fullscreen : false,
 		locked : false
-	});var MapModule = require('ti.map');
+	});
+	var MapModule = require('ti.map');
 	var gmap = MapModule.createView({
 		userLocation : true,
 		enableZoomControls : false,
 		mapType : MapModule.NORMAL_TYPE,
 		userLocationButton : true,
 		region : {
-			latitude : 0,
-			longitude : 0,
+			latitude : 53.5,
+			longitude : 10,
 			latitudeDelta : 90,
 			longitudeDelta : 40
 		},
