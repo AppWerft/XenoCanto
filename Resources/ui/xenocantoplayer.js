@@ -33,19 +33,50 @@ exports.create = function(_win, _song) {
 		}
 	}));
 	self.add(self.sonogramm);
-	self.add(Ti.UI.createLabel({
-		text : _song.rec,
-		left : '10dip',
-		font : {
-			fontWeight : 'bold'
-		}
+	var meta = Ti.UI.createView({
+		top : 0,
+		height : '80dip'
+	});
+	meta.add(Ti.UI.createLabel({
+		left : 100,
+		top : 20,
+		text : song.rec,
+		height : 20,
+		color : 'black'
 	}));
+	self.add(meta);
 	Ti.App.XenoCanto.getRecordingDetails({
 		id : _song.id,
 		onload : function(_data) {
 			self.sonogramm.backgroundImage = _data.sonogramm;
 			song.duration = _data.duration;
 			song.mp3 = _data.mp3;
+			song.date = _data.date;
+			song.time = _data.time;
+			song.memberpic = _data.memberpic;
+			meta.add(Ti.UI.createLabel({
+				left : 100,
+				text : song.date,
+				top : 50,
+				height : 20,
+				color : 'black'
+			}));
+			meta.add(Ti.UI.createLabel({
+				left : 100,
+				text : song.time,
+				top : 80,
+				height : 20,
+				color : 'black'
+			}));
+			meta.add(Ti.UI.createImageView({
+				left : 0,
+				width : 90,
+				height : 90,
+				top : '10dip',
+				backgroundColor : '#ddd',
+				image : song.memberpic
+			}));
+
 			self.playstart = Ti.UI.createImageView({
 				image : '/assets/play.png',
 				width : 60,
@@ -54,6 +85,7 @@ exports.create = function(_win, _song) {
 			});
 			self.sonogramm.add(self.progress);
 			self.sonogramm.add(self.playstart);
+
 			self.addEventListener('click', function() {
 				self.progress.setLeft(0);
 				try {

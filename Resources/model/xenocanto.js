@@ -44,7 +44,17 @@ XenoCanto.prototype.getRecordingDetails = function(_song) {
 			if (res) {
 				song.mp3 = res[1];
 			}
-			console.log(song);
+			res = /uploaded\/(.*?)\//g.exec(song.mp3);
+			if (res) {
+				song.memberpic = 'http://www.xeno-canto.org/graphics/memberpics/' + res[1] + '.png';
+			}
+			res = /<td>Date<\/td><td>(.*?)<\/td>/g.exec(web);
+			if (res) {
+				song.date = res[1];
+			}res = /<td>Time<\/td><td>(.*?)<\/td>/g.exec(web);
+			if (res) {
+				song.time = res[1];
+			}
 			_song.onload(song);
 		}
 	});

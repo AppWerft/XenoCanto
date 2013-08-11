@@ -1,7 +1,7 @@
 exports.create = function(_family) {
 	console.log('start familywindow');
 	var self = Ti.UI.createWindow({
-		fullscreen : false,
+		fullscreen : true,
 		title : 'All species of ' + _family.latinname + ' # ' + _family.localname,
 		orientationModes : [Ti.UI.PORTRAIT],
 	});

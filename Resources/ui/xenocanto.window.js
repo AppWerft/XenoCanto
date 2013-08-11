@@ -1,6 +1,6 @@
 exports.create = function(_bird) {
 	var self = Ti.UI.createWindow({
-		fullscreen : true,
+		fullscreen : false,
 		title : _bird.latinname,
 		backgroundColor : 'white',
 		orientationModes : [Ti.UI.PORTRAIT]
@@ -59,7 +59,7 @@ exports.create = function(_bird) {
 			});
 			self.add(b);
 			b.addEventListener('click', function() {
-				var gmap = require('ui/gmap.window').create();
+				var gmap = require('ui/gmap.window').create(_res);
 				gmap.open();
 			});
 			rows.push(maprow);
