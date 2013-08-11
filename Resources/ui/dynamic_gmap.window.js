@@ -1,4 +1,4 @@
-exports.create = function() {
+exports.create = function(_bird) {
 	var self = Ti.UI.createWindow({
 		fullscreen : false,
 		locked : false
@@ -23,6 +23,7 @@ exports.create = function() {
 	var onregionchanged = function(_e) {
 		if (self.locked == true) {
 			lastregion = _e;
+			console.log('locked');
 			return;
 		}
 		self.locked = true;
@@ -31,6 +32,8 @@ exports.create = function() {
 		Ti.App.XenoCanto.searchRecordings({
 			box : box,
 			onload : function(_data) {
+				console.log('got ' + _data.recordings.length);
+				;
 				gmap.removeAllAnnotations();
 				pins = [];
 				for (var i = 0; i < _data.recordings.length && i < 99; i++) {
@@ -50,8 +53,43 @@ exports.create = function() {
 						onregionchanged(lastregion);
 					lastregion = null;
 				}, 1000);
+
 			}
 		});
 	}
+
+	self.gmap.addEventListener('regionchanged', onregionchanged);
+	self.gmap.addEventListener('click', function() {
+		self.locked = true;
+		setTimeout(function() {
+			self.locked = false;
+		}, 7000);
+	});
+
+	var gpsProvider = Ti.Geolocation.Android.createLocationProvider({
+		name : Ti.Geolocation.PROVIDER_GPS,
+		minUpdateTime : 600,
+		minUpdateDistance : 1000
+	});
+	var gpsRule = Ti.Geolocation.Android.createLocationRule({
+		provider : Ti.Geolocation.PROVIDER_GPS,
+		accuracy : 10000,
+		maxAge : 300000,
+		minAge : 10000
+	});
+	Ti.Geolocation.Android.addLocationRule(gpsRule);
+	Ti.Geolocation.Android.addLocationProvider(gpsProvider);
+	Ti.Geolocation.getCurrentPosition(function(_e) {
+		self.addEventListener('focus', function() {
+			var region = {
+				latitude : _e.coords.latitude,
+				longitude : _e.coords.longitude,
+				latitudeDelta : START,
+				longitudeDelta : START
+			};
+			self.gmap.setLocation(region);
+			onregionchanged(region);
+		});
+	});
 	return self;
 }
