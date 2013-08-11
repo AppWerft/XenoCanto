@@ -1,5 +1,3 @@
-const START = 1;
-
 exports.create = function(_bird) {
 	var self = Ti.UI.createWindow({
 		title : null,
@@ -117,6 +115,5 @@ exports.create = function(_bird) {
 			});
 		});
 	}
-
 	return self;
 }
