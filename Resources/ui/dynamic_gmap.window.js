@@ -1,4 +1,4 @@
-exports.create = function(_bird) {
+exports.create = function() {
 	var self = Ti.UI.createWindow({
 		fullscreen : false,
 		locked : false
@@ -53,25 +53,5 @@ exports.create = function(_bird) {
 			}
 		});
 	}
-	for (var i = 0; i < _bird.recordings.length; i++) {
-		var r = _bird.recordings[i];
-		if (r.lat != null && r.lng != null) {
-			lat = r.lat;
-			lng = r.lng;
-			pins.push(Ti.App.GMap.createAnnotation({
-				latitude : lat,
-				title : r.loc,
-				pincolor : Ti.App.GMap.ANNOTATION_GREEN,
-				longitude : lng,
-			}));
-		}
-	}
-	setTimeout(function() {
-		gmap.addAnnotations(pins);
-		gmap.setLocation({
-			latitude : lat,
-			longitude : lng
-		})
-	}, 800);
 	return self;
 }
