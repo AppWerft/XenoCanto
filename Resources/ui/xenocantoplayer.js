@@ -41,10 +41,12 @@ exports.create = function(_win, _song) {
 	meta.add(Ti.UI.createLabel({
 		left : 100,
 		top : 20,
+		bottom : 30,
 		text : song.rec,
-		height : 20,
+		height : 25,
 		font : {
-			fontWeight : 'bold'
+			fontFamily : 'UbuntuCondensed-Regular',
+			fontSize : '16dip',fontWeight:'bold'
 		},
 		color : 'black'
 	}));
@@ -63,14 +65,24 @@ exports.create = function(_win, _song) {
 				text : song.date,
 				top : 50,
 				height : 20,
-				color : 'black'
+				color : 'black',
+				font : {
+					fontFamily : 'UbuntuCondensed-Regular',
+					fontSize : '14dip'
+				},
+
 			}));
 			meta.add(Ti.UI.createLabel({
 				left : 100,
 				text : song.time,
 				top : 80,
 				height : 20,
-				color : 'black'
+				color : 'black',
+				font : {
+					fontFamily : 'UbuntuCondensed-Regular',
+					fontSize : '14dip'
+				},
+
 			}));
 			meta.add(Ti.UI.createImageView({
 				left : 0,

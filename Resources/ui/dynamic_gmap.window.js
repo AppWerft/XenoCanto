@@ -1,3 +1,4 @@
+const START = 1;
 exports.create = function(_bird) {
 	var self = Ti.UI.createWindow({
 		fullscreen : false,
