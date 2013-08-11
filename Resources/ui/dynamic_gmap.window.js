@@ -15,7 +15,7 @@ exports.create = function(_bird) {
 			latitude : 50.9270540,
 			longitude : 11.5892372,
 			latitudeDelta : START,
-			longitudeDelta : START	
+			longitudeDelta : START
 		},
 		animate : true
 	});
@@ -40,14 +40,14 @@ exports.create = function(_bird) {
 		if (self.locked == true) {
 			lastregion = _e;
 			console.log('map was locked');
-			self.log.setText('Map is locked.');
+			self.log.setText('Map is locked during server request.');
 			return;
 		}
 		self.locked = true;
 		self.log.setText('Map will locked until data from server retrieving');
 		console.log('Map will locked until new pins are rendered');
 		var box = (_e.latitude - _e.latitudeDelta / 2.1) + ',' + (_e.longitude - _e.longitudeDelta / 2.1) + ',' + (_e.latitude + _e.latitudeDelta / 2.1) + ',' + (_e.longitude + _e.longitudeDelta / 2.1);
-		Ti.App.XenoCanto.searchRecordings({
+		var xhr = Ti.App.XenoCanto.searchRecordings({
 			box : box,
 			onload : function(_data) {
 				console.log('new data from server: ' + _data.recordings.length);
@@ -56,24 +56,35 @@ exports.create = function(_bird) {
 				console.log('removing of all old pins ' + pins.length);
 				pins = [];
 				for (var i = 0; i < _data.recordings.length && i < 99; i++) {
+					var rec = _data.recordings[i];
+					var pincolor = Ti.App.GMap.ANNOTATION_YELLOW;
+					switch (true) {
+						case rec.type.match(/song/):
+							pincolor = Ti.App.GMap.ANNOTATION_GREEN;
+							break;
+						case rec.type.match(/call/):
+							pincolor = Ti.App.GMap.ANNOTATION_AZURE;
+							break;
+					}
 					pins.push(Ti.App.GMap.createAnnotation({
-						latitude : _data.recordings[i].lat,
-						title : _data.recordings[i].gen + ' ' + _data.recordings[i].sp,
-						subtitle : _data.recordings[i].rec,
-						pincolor : Ti.App.GMap.ANNOTATION_GREEN,
-						longitude : _data.recordings[i].lng,
+						latitude : rec.lat,
+						title : rec.gen + ' ' + rec.sp,
+						subtitle : rec.rec,
+						pincolor : pincolor,
+						longitude : rec.lng,
 					}));
+					self.log.setText('Pin created: ' + i);
 				}
-				console.log('All new pins created');
 				self.gmap.addAnnotations(pins);
-				console.log('All new pins added');
 				setTimeout(function() {
 					console.log('map unlocked');
 					self.locked = false;
-					/*if (lastregion)
-					 onregionchanged(lastregion);
-					 lastregion = null;*/
-				}, 1000);
+					self.log.setText('Map ready for panning/zooming. ' + i + ' pins visible.');
+					if (lastregion) {
+						onregionchanged(lastregion);
+						lastregion = null;
+					}
+				}, 100);
 			}
 		});
 	}

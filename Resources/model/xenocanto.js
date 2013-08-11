@@ -24,6 +24,7 @@ XenoCanto.prototype.searchRecordings = function(_args) {
 	});
 	xhr.open('GET', url);
 	xhr.send(null);
+	return xhr;
 }
 
 XenoCanto.prototype.getRecordingDetails = function(_song) {
