@@ -5,6 +5,7 @@ var XenoCanto = require('model/xenocanto');
 
 Ti.App.BirdNames = new BirdNames();
 Ti.App.XenoCanto = new XenoCanto();
+Ti.App.GMap =  require('ti.map');
 
 var tab1 = Titanium.UI.createTab({
 	title : 'All',

@@ -3,11 +3,10 @@ exports.create = function(_bird) {
 		fullscreen : false,
 		locked : false
 	});
-	var MapModule = require('ti.map');
-	self.gmap = MapModule.createView({
+	self.gmap = Ti.App.GMap.createView({
 		userLocation : true,
 		enableZoomControls : false,
-		mapType : MapModule.NORMAL_TYPE,
+		mapType : Ti.App.GMap.NORMAL_TYPE,
 		userLocationButton : true,
 		region : {
 			latitude : 53.5,
@@ -38,11 +37,11 @@ exports.create = function(_bird) {
 				gmap.removeAllAnnotations();
 				pins = [];
 				for (var i = 0; i < _data.recordings.length && i < 99; i++) {
-					pins.push(MapModule.createAnnotation({
+					pins.push(Ti.App.GMap.createAnnotation({
 						latitude : _data.recordings[i].lat,
 						title : _data.recordings[i].gen + ' ' + _data.recordings[i].sp,
 						subtitle : _data.recordings[i].rec,
-						pincolor : MapModule.ANNOTATION_GREEN,
+						pincolor : Ti.App.GMap.ANNOTATION_GREEN,
 						longitude : _data.recordings[i].lng,
 					}));
 				}
@@ -64,10 +63,10 @@ exports.create = function(_bird) {
 			if (r.lat != null && r.lng != null) {
 				lat = r.lat;
 				lng = r.lng;
-				pins.push(MapModule.createAnnotation({
+				pins.push(Ti.App.GMap.createAnnotation({
 					latitude : lat,
 					title : r.loc,
-					pincolor : MapModule.ANNOTATION_GREEN,
+					pincolor : Ti.App.GMap.ANNOTATION_GREEN,
 					longitude : lng,
 				}));
 			}
