@@ -23,17 +23,13 @@ exports.create = function(_bird) {
 	var onregionchanged = function(_e) {
 		if (self.locked == true) {
 			lastregion = _e;
-			console.log('locked');
 			return;
 		}
 		self.locked = true;
 		var box = (_e.latitude - _e.latitudeDelta / 2.1) + ',' + (_e.longitude - _e.longitudeDelta / 2.1) + ',' + (_e.latitude + _e.latitudeDelta / 2.1) + ',' + (_e.longitude + _e.longitudeDelta / 2.1);
-		console.log('retrieving');
 		Ti.App.XenoCanto.searchRecordings({
 			box : box,
 			onload : function(_data) {
-				console.log('got ' + _data.recordings.length);
-				;
 				gmap.removeAllAnnotations();
 				pins = [];
 				for (var i = 0; i < _data.recordings.length && i < 99; i++) {
@@ -57,7 +53,6 @@ exports.create = function(_bird) {
 			}
 		});
 	}
-
 	self.gmap.addEventListener('regionchanged', onregionchanged);
 	self.gmap.addEventListener('click', function() {
 		self.locked = true;
