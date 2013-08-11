@@ -23,7 +23,6 @@ exports.create = function(_bird) {
 	var onregionchanged = function(_e) {
 		if (self.locked == true) {
 			lastregion = _e;
-			console.log('locked');
 			return;
 		}
 		self.locked = true;
@@ -32,8 +31,6 @@ exports.create = function(_bird) {
 		Ti.App.XenoCanto.searchRecordings({
 			box : box,
 			onload : function(_data) {
-				console.log('got ' + _data.recordings.length);
-				;
 				gmap.removeAllAnnotations();
 				pins = [];
 				for (var i = 0; i < _data.recordings.length && i < 99; i++) {
@@ -53,7 +50,6 @@ exports.create = function(_bird) {
 						onregionchanged(lastregion);
 					lastregion = null;
 				}, 1000);
-
 			}
 		});
 	}
