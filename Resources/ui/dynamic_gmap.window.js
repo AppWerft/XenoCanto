@@ -2,21 +2,36 @@ const START = 1;
 exports.create = function(_bird) {
 	var self = Ti.UI.createWindow({
 		fullscreen : false,
-		locked : false
+		locked : false,
+		orientationModes : [Ti.UI.PORTRAIT]
 	});
 	self.gmap = Ti.App.GMap.createView({
 		userLocation : true,
 		enableZoomControls : false,
 		mapType : Ti.App.GMap.NORMAL_TYPE,
 		userLocationButton : true,
+		bottom : '20dp',
 		region : {
-			latitude : 53.5,
-			longitude : 10,
-			latitudeDelta : 90,
-			longitudeDelta : 40
+			latitude : 50.9270540,
+			longitude : 11.5892372,
+			latitudeDelta : START,
+			longitudeDelta : START	
 		},
 		animate : true
 	});
+	self.logcontainer = Ti.UI.createView({
+		backgroundColor : 'black',
+		height : '20dp',
+		width : Ti.UI.FILL,
+		bottom : 0
+	});
+	self.log = Ti.UI.createLabel({
+		height : '20dp',
+		width : Ti.UI.FILL,
+		color : 'white',
+	});
+	self.logcontainer.add(self.log);
+	self.add(self.logcontainer);
 	self.add(self.gmap);
 	var lastregion = null;
 	var lat, lng;
@@ -24,14 +39,21 @@ exports.create = function(_bird) {
 	var onregionchanged = function(_e) {
 		if (self.locked == true) {
 			lastregion = _e;
+			console.log('map was locked');
+			self.log.setText('Map is locked.');
 			return;
 		}
 		self.locked = true;
+		self.log.setText('Map will locked until data from server retrieving');
+		console.log('Map will locked until new pins are rendered');
 		var box = (_e.latitude - _e.latitudeDelta / 2.1) + ',' + (_e.longitude - _e.longitudeDelta / 2.1) + ',' + (_e.latitude + _e.latitudeDelta / 2.1) + ',' + (_e.longitude + _e.longitudeDelta / 2.1);
 		Ti.App.XenoCanto.searchRecordings({
 			box : box,
 			onload : function(_data) {
-				gmap.removeAllAnnotations();
+				console.log('new data from server: ' + _data.recordings.length);
+				self.log.setText('New data from server: ' + _data.recordings.length);
+				self.gmap.removeAllAnnotations();
+				console.log('removing of all old pins ' + pins.length);
 				pins = [];
 				for (var i = 0; i < _data.recordings.length && i < 99; i++) {
 					pins.push(Ti.App.GMap.createAnnotation({
@@ -42,15 +64,16 @@ exports.create = function(_bird) {
 						longitude : _data.recordings[i].lng,
 					}));
 				}
+				console.log('All new pins created');
 				self.gmap.addAnnotations(pins);
+				console.log('All new pins added');
 				setTimeout(function() {
-					console.log('unlocked');
+					console.log('map unlocked');
 					self.locked = false;
-					if (lastregion)
-						onregionchanged(lastregion);
-					lastregion = null;
+					/*if (lastregion)
+					 onregionchanged(lastregion);
+					 lastregion = null;*/
 				}, 1000);
-
 			}
 		});
 	}
@@ -61,7 +84,6 @@ exports.create = function(_bird) {
 			self.locked = false;
 		}, 7000);
 	});
-
 	var gpsProvider = Ti.Geolocation.Android.createLocationProvider({
 		name : Ti.Geolocation.PROVIDER_GPS,
 		minUpdateTime : 600,
@@ -75,15 +97,17 @@ exports.create = function(_bird) {
 	});
 	Ti.Geolocation.Android.addLocationRule(gpsRule);
 	Ti.Geolocation.Android.addLocationProvider(gpsProvider);
+	self.log.setText('Retrieving your position');
 	Ti.Geolocation.getCurrentPosition(function(_e) {
 		self.addEventListener('focus', function() {
+			self.log.setText('Window focused , getting your position');
 			var region = {
 				latitude : _e.coords.latitude,
 				longitude : _e.coords.longitude,
 				latitudeDelta : START,
 				longitudeDelta : START
 			};
-			self.gmap.setLocation(region);
+			self.gmap.setRegion(region);
 			onregionchanged(region);
 		});
 	});

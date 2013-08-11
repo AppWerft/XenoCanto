@@ -25,7 +25,7 @@ exports.create = function() {
 	var self = Ti.UI.createWindow({
 		exitOnClose : true,
 		backgroundColor : 'white',
-		navBarHidden : true,
+		navBarHidden : true,orientationModes : [Ti.UI.PORTRAIT],
 		title : 'Birdnames :: Orders and Families'
 	});
 	

@@ -3,7 +3,7 @@ exports.create = function(_family) {
 	var self = Ti.UI.createWindow({
 		fullscreen : true,
 		title : 'All species of ' + _family.latinname + ' # ' + _family.localname,
-		orientationModes : [Ti.UI.PORTRAIT],
+		orientationModes : [Ti.UI.PORTRAIT]
 	});
 	self.listView = Ti.UI.createListView({
 		templates : {
