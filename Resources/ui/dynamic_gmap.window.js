@@ -57,7 +57,6 @@ exports.create = function(_bird) {
 			}
 		});
 	}
-	if (_bird) {
 		for (var i = 0; i < _bird.recordings.length; i++) {
 			var r = _bird.recordings[i];
 			if (r.lat != null && r.lng != null) {
@@ -78,40 +77,6 @@ exports.create = function(_bird) {
 				longitude : lng
 			})
 		}, 800);
-	} else {
-		self.gmap.addEventListener('regionchanged', onregionchanged);
-		self.gmap.addEventListener('click', function() {
-			self.locked = true;
-			setTimeout(function() {
-				self.locked = false;
-			}, 7000);
-		});
-
-		var gpsProvider = Ti.Geolocation.Android.createLocationProvider({
-			name : Ti.Geolocation.PROVIDER_GPS,
-			minUpdateTime : 600,
-			minUpdateDistance : 1000
-		});
-		var gpsRule = Ti.Geolocation.Android.createLocationRule({
-			provider : Ti.Geolocation.PROVIDER_GPS,
-			accuracy : 10000,
-			maxAge : 300000,
-			minAge : 10000
-		});
-		Ti.Geolocation.Android.addLocationRule(gpsRule);
-		Ti.Geolocation.Android.addLocationProvider(gpsProvider);
-		Ti.Geolocation.getCurrentPosition(function(_e) {
-			self.addEventListener('focus', function() {
-				var region = {
-					latitude : _e.coords.latitude,
-					longitude : _e.coords.longitude,
-					latitudeDelta : START,
-					longitudeDelta : START
-				};
-				self.gmap.setLocation(region);
-				onregionchanged(region);
-			});
-		});
-	}
+	
 	return self;
 }
